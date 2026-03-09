@@ -72,10 +72,22 @@
         let quizData = [];
         let currentQuestionIndex = 0;
         let score = 0;
+        let phase = 0; // Inicialmente na fase 0
 
         async function fetchQuizData() {
             const response = await fetch('quiz.json');
             return await response.json();
+        }
+
+        function loadPhase(phaseData) {
+            if (phase < 3) {
+                quizData = phaseData;
+                currentQuestionIndex = 0;
+                score = 0;
+                loadQuestion();
+            } else {
+                displayFinalResult();
+            }
         }
 
         function loadQuestion() {
@@ -109,25 +121,34 @@
                 if (currentQuestionIndex < quizData.length) {
                     loadQuestion();
                 } else {
-                    displayResult();
+                    phase++; // Avança para a próxima fase
+                    loadNextPhase();
                 }
             } else {
                 alert('Selecione uma opção!');
             }
         });
 
-        function displayResult() {
+        function loadNextPhase() {
+            const phases = [quizData.phase1, quizData.phase2, quizData.phase3];
+            if (phase < phases.length) {
+                loadPhase(phases[phase]);
+            } else {
+                displayFinalResult();
+            }
+        }
+
+        function displayFinalResult() {
             const resultDiv = document.getElementById('result');
             resultDiv.innerHTML = `
-                <h3>Resultado</h3>
-                <p>Você acertou ${score} de ${quizData.length} perguntas!</p>
+                <h3>Parabéns!</h3>
+                <p>Você acertou ${score} de ${2 * (phase + 1)} perguntas!</p>
             `;
             document.getElementById('quizbox').style.display = 'none'; // Oculta o quiz
         }
 
         fetchQuizData().then(data => {
-            quizData = data;
-            loadQuestion(); // Carrega a primeira pergunta
+            loadPhase(data); // Carrega a fase inicial
         });
     </script>
 </body>
