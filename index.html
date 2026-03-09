@@ -81,8 +81,8 @@
 
         function loadPhase(phaseData) {
             quizData = phaseData;
-            currentQuestionIndex = 0;
-            score = 0;
+            currentQuestionIndex = 0; // Reseta o índice de perguntas nesta fase
+            score = 0; // Reseta a pontuação
             loadQuestion();
         }
 
@@ -118,7 +118,11 @@
                     loadQuestion();
                 } else {
                     phase++; // Avança para a próxima fase
-                    loadNextPhase();
+                    if (phase < 3) {
+                        loadNextPhase();
+                    } else {
+                        displayFinalResult();
+                    }
                 }
             } else {
                 alert('Selecione uma opção!');
@@ -126,12 +130,10 @@
         });
 
         function loadNextPhase() {
-            const phases = [quizData.phase1, quizData.phase2, quizData.phase3];
-            if (phase < phases.length) {
+            fetchQuizData().then(data => {
+                const phases = [data.phase1, data.phase2, data.phase3];
                 loadPhase(phases[phase]);
-            } else {
-                displayFinalResult();
-            }
+            });
         }
 
         function displayFinalResult() {
@@ -144,7 +146,7 @@
         }
 
         fetchQuizData().then(data => {
-            const phases = [data.phase1, data.phase2, data.phase3]; // Ajuste aqui
+            const phases = [data.phase1, data.phase2, data.phase3];
             loadPhase(phases[phase]); // Carrega a fase inicial
         });
     </script>
