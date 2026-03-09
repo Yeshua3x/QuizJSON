@@ -80,14 +80,10 @@
         }
 
         function loadPhase(phaseData) {
-            if (phase < 3) {
-                quizData = phaseData;
-                currentQuestionIndex = 0;
-                score = 0;
-                loadQuestion();
-            } else {
-                displayFinalResult();
-            }
+            quizData = phaseData;
+            currentQuestionIndex = 0;
+            score = 0;
+            loadQuestion();
         }
 
         function loadQuestion() {
@@ -148,7 +144,8 @@
         }
 
         fetchQuizData().then(data => {
-            loadPhase(data); // Carrega a fase inicial
+            const phases = [data.phase1, data.phase2, data.phase3]; // Ajuste aqui
+            loadPhase(phases[phase]); // Carrega a fase inicial
         });
     </script>
 </body>
