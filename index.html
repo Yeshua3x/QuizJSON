@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz</title>
     <style>
-      .option {
-    display: block; /* Exibe cada opção em uma nova linha */
-    margin-bottom: 10px; /* Espaço entre opções */
-      }
-        /* Adicione seu estilo aqui, se necessário */
+        .option {
+            display: block; /* Exibe as opções verticalmente */
+            margin-bottom: 10px; /* Espaço entre opções */
+        }
     </style>
 </head>
 <body>
@@ -24,7 +23,7 @@
     <audio id="wrong-sound" src="wrong.mp3" preload="auto"></audio>
 
     <script>
-        let quizData = [];
+        let quizData;
         let currentQuestionIndex = 0;
         let score = 0;
         let phase = 0;
@@ -72,7 +71,7 @@
                 if (currentQuestionIndex < quizData.length) {
                     loadQuestion();
                 } else {
-                    if (phase < 2) { // Corrigido para verificar se não está na última fase
+                    if (phase < 2) {
                         phase++;
                         loadNextPhase();
                     } else {
@@ -97,13 +96,12 @@
                 <h3>Parabéns!</h3>
                 <p>Você acertou ${score} de ${2 * (phase + 1)} perguntas!</p>
             `;
-            document.getElementById('quizbox').style.display = 'none'; // Oculta o quiz
-            resultDiv.style.display = 'block'; // Exibe o resultado
+            document.getElementById('quizbox').style.display = 'none';
+            resultDiv.style.display = 'block';
         }
 
         fetchQuizData().then(data => {
-            const phases = [data.phase1, data.phase2, data.phase3];
-            loadPhase(phases[phase]); // Carrega a fase inicial
+            loadPhase(data.phase1); // Carrega a fase inicial
         });
     </script>
 </body>
