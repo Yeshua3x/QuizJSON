@@ -8,7 +8,7 @@
         {
             "question": "Qual é o rio mais longo do mundo?",
             "options": ["Nilo", "Amazonas", "Yangtze", "Mississipi"],
-            "answer": "Nilo"  // Resposta corrigida para refletir a perspectiva mais comum
+            "answer": "Nilo"  // Atualizado para refletir a informação mais comum
         }
     ],
     "phase2": [
@@ -36,3 +36,4 @@
         }
     ]
 }
+
