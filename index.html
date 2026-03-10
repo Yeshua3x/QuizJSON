@@ -3,58 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz de Geografia</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Quiz</title>
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f0f4f8;
-            margin: 0;
-            padding: 20px;
-        }
-        #quizbox {
-            background: #ffffff;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            margin: auto;
-        }
-        #question {
-            font-size: 20px;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-        .option {
-            display: block;
-            margin: 10px 0;
-            padding: 10px;
-            background: #e0f7fa;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .option:hover {
-            background: #b2ebf2;
-        }
-        #submit {
-            padding: 10px 15px;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 20px;
-        }
-        #submit:hover {
-            background-color: #0056b3;
-        }
-        #result {
-            margin-top: 20px;
-            font-weight: bold;
-            text-align: center;
-        }
+        /* Adicione seu estilo aqui, se necessário */
     </style>
 </head>
 <body>
@@ -62,7 +13,7 @@
         <div id="question">Carregando...</div>
         <div id="options"></div>
         <button id="submit">Enviar</button>
-        <div id="result"></div>
+        <div id="result" style="display: none;"></div>
     </div>
 
     <audio id="correct-sound" src="correct.mp3" preload="auto"></audio>
@@ -72,7 +23,7 @@
         let quizData = [];
         let currentQuestionIndex = 0;
         let score = 0;
-        let phase = 0; // Inicialmente na fase 0
+        let phase = 0;
 
         async function fetchQuizData() {
             const response = await fetch('quiz.json');
@@ -81,8 +32,8 @@
 
         function loadPhase(phaseData) {
             quizData = phaseData;
-            currentQuestionIndex = 0; // Reseta o índice de perguntas nesta fase
-            score = 0; // Reseta a pontuação
+            currentQuestionIndex = 0;
+            score = 0;
             loadQuestion();
         }
 
@@ -91,7 +42,7 @@
             document.getElementById('question').innerText = currentQuestion.question;
 
             const optionsDiv = document.getElementById('options');
-            optionsDiv.innerHTML = ''; // Limpa opções anteriores
+            optionsDiv.innerHTML = '';
 
             currentQuestion.options.forEach(option => {
                 const label = document.createElement('label');
@@ -117,8 +68,8 @@
                 if (currentQuestionIndex < quizData.length) {
                     loadQuestion();
                 } else {
-                    phase++; // Avança para a próxima fase
-                    if (phase < 3) {
+                    if (phase < 2) { // Corrigido para verificar se não está na última fase
+                        phase++;
                         loadNextPhase();
                     } else {
                         displayFinalResult();
@@ -143,6 +94,7 @@
                 <p>Você acertou ${score} de ${2 * (phase + 1)} perguntas!</p>
             `;
             document.getElementById('quizbox').style.display = 'none'; // Oculta o quiz
+            resultDiv.style.display = 'block'; // Exibe o resultado
         }
 
         fetchQuizData().then(data => {
